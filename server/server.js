@@ -15,18 +15,16 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log("New user connected");
 
+    socket.on('createMes', (newMes) => {
+        console.log(`1 new message:`, newMes);
+        io.emit('newMes', {
+            from: newMes.from,
+            text: newMes.text
+        });
+    });
+
     socket.on('disconnect', () => {
         console.log('1 user disconected');
-    });
-
-    socket.emit('newMes', {
-        from: 'Shaney',
-        text: 'Hello',
-        createdAt: currentDate
-    });
-
-    socket.on('createMes', (newMes) => {
-        console.log(`1 new message:`, newMes)
     });
 });
 
