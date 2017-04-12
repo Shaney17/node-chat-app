@@ -4,7 +4,7 @@ socket.on('connect', function() {
     console.log("Connected to the server");
 });
 
-socket.on('newMes', (mes) => {
+socket.on('newMes', function(mes) {
     console.log(`1 new message:`, mes);
 });
 
