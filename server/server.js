@@ -21,15 +21,10 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('newMes', generateMessage('admin', 'New user joined'));
 
-    socket.on('createMes', (newMes) => {
+    socket.on('createMes', (newMes, callback) => {
         console.log(`1 new message:`, newMes);
         io.emit('newMes', generateMessage(newMes.from, newMes.text));
-
-        // socket.broadcast.emit('newMes', {
-        //     from: newMes.from,
-        //     text: newMes.text,
-        //     createdAt: new Date().getTime()
-        // });
+        callback();
     });
 
     socket.on('disconnect', () => {
