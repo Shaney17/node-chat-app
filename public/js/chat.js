@@ -17,7 +17,25 @@ function scrollToBottom () {
 };
 
 socket.on('connect', function() {
-    console.log("Connected to the server");
+    var params = jQuery.deparam(window.location.search);
+    socket.emit('join', params, function (err) {
+        if (err) {
+            alert(err);
+            window.location.href = "/";
+        } else {
+            console.log("connected to the chat room !");
+        }
+    });
+});
+
+socket.on('updateUserList', function (users) {
+    var ol = jQuery('<ol></ol>');
+
+    users.forEach((user) => {
+        ol.append(jQuery('<li></li>').text(user));
+    });
+
+    jQuery('#users').html(ol);
 });
 
 socket.on('newMes', function(mes) {
@@ -39,7 +57,6 @@ jQuery('#message-form').on('submit', function(e) {
     const messageBox = jQuery('[name=message]');
 
     socket.emit('createMes', {
-        from: 'User',
         text: messageBox.val()
     }, function(){
         messageBox.val('');
